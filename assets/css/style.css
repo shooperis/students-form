@@ -235,7 +235,7 @@ body {
 .students-list-wrapper #students-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: start;
   gap: 35px;
 }
 .students-list-wrapper #students-list .student-item {
