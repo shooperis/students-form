@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.png">
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <title>Students Form</title>
+</head>
+<body>
+  
+  <div class="wrapper">
+    <section class="form-wrapper">
+      <div class="left-side">
+        <img src="./assets/images/form-image.svg" alt="form image">
+      </div>
+      
+      <div class="right-side">
+        <div class="form-container">
+          <h1 class="form-title">Students form</h1>
+          <p class="form-text">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p>
+    
+          <form id="students-form">
+            <div class="student-info">
+              <div class="input-group">
+                <label for="first-name">First name</label>
+                <input name="first-name" id="first-name" type="text" required>
+              </div>
+              
+              <div class="input-group">
+                <label for="last-name">Last name</label>
+                <input name="last-name" id="last-name" type="text" required>
+              </div>
+                
+              <div class="input-group">
+                <label for="age">Age</label>
+                <input name="age" id="age" type="number" min="1" max="150" required>
+              </div>
+                
+              <div class="input-group">
+                <label for="phone">Phone</label>
+                <input name="phone" id="phone" type="tel">
+              </div>
+                
+              <div class="input-group">
+                <label for="email">Email</label>
+                <input name="email" id="email" type="email" required>
+              </div>
+                
+              <div class="input-group">
+                <label for="it-skills">IT skills</label>
+                <div class="input-range">
+                  <input name="it-skills" id="it-skills" type="range" min="1" max="10" step="1" value="3">
+                  <output id="it-skills-value">3</output>
+                </div>
+              </div>
+            </div>
+            
+            <fieldset>
+              <legend>Group number</legend>
+          
+              <div class="input-group">
+                <input name="group-number" id="group-number-1" type="radio" value="FEU 1gr.">
+                <label for="group-number-1">FEU 1gr.</label>
+              </div>
+                
+              <div class="input-group">
+                <input name="group-number" id="group-number-2" type="radio" value="FEU 2gr.">
+                <label for="group-number-2">FEU 2gr.</label>
+              </div>
+                
+              <div class="input-group">
+                <input name="group-number" id="group-number-3" type="radio" value="FEU 3gr.">
+                <label for="group-number-3">FEU 3gr.</label>
+              </div>
+                
+              <div class="input-group">
+                <input name="group-number" id="group-number-4" type="radio" value="FEU 4gr.">
+                <label for="group-number-4">FEU 4gr.</label>
+              </div>
+            </fieldset>
+    
+            <fieldset>
+              <legend>Programing language</legend>
+          
+              <div class="input-group">
+                <input name="programing-language" id="programing-language-php" type="checkbox" value="PHP">
+                <label for="programing-language-php">PHP</label>
+              </div>
+                
+              <div class="input-group">
+                <input name="programing-language" id="programing-language-java" type="checkbox" value="Java">
+                <label for="programing-language-java">Java</label>
+              </div>
+                
+              <div class="input-group">
+                <input name="programing-language" id="programing-language-c" type="checkbox" value="C#">
+                <label for="programing-language-c">C#</label>
+              </div>
+                
+              <div class="input-group">
+                <input name="programing-language" id="programing-language-dotnet" type="checkbox" value=".NET">
+                <label for="programing-language-dotnet">.NET</label>
+              </div>
+            </fieldset>
+
+            <button class="submit-button btn big-btn" type="submit" formnovalidate>Save</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="students-list-wrapper hidden">
+      <h2 class="list-title">Students list</h2>
+      <div id="students-list"></div>
+    </section>
+  </div>
+
+  <script src="./assets/js/script.js"></script>
+</body>
+</html>

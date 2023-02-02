@@ -1,0 +1,64 @@
+.students-list-wrapper {
+  @include size(sm) {
+    width: 75%;
+    margin: auto;
+  }
+
+  @include size(xs) {
+    width: 100%;
+  }
+
+  .list-title {
+    font-size: 28px;
+    font-weight: 400;
+    margin: 25px 0px 20px;
+  }
+
+  &.hidden {
+    display: none;
+  }
+
+  #students-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 35px;
+
+    .student-item {
+      width: calc(100% / 3 - 24px);
+      background: $list-bg-color;
+      border-radius: 7px;
+      padding: 15px 15px;
+
+      @include size(md) {
+        width: calc(100% / 2 - 18px);
+      }
+
+      @include size(sm) {
+        width: 100%;
+      }
+
+      h3, h4 {
+        color: $list-text-color-primary;
+        margin: 0px;
+      }
+
+      h3 + h4 {
+        margin-top: 7px;
+      }
+
+      p {
+        margin: 8px 0px;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      button + button {
+        margin-top: 10px;
+      }
+    }
+  
+  }
+}

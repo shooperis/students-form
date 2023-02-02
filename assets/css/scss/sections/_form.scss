@@ -1,0 +1,135 @@
+.form-wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+  padding-bottom: 50px;
+
+  .left-side {
+    max-width: 50%;
+
+    @include size(sm) {
+      display: none;
+    }
+
+    img {
+      max-width: 100%;
+      position: sticky;
+      top: 30px;
+    }
+  }
+
+  .right-side {
+    max-width: 50%;
+
+    @include size(sm) {
+      max-width: 100%;
+    }
+  }
+
+  .form-container {
+    width: 75%;
+    margin: 0px auto;
+
+    @include size(md) {
+      width: 100%;
+    }
+
+    @include size(sm) {
+      width: 75%;
+    }
+
+    @include size(xs) {
+      width: 100%;
+    }
+
+    .form-title {
+      font-size: 28px;
+      font-weight: 400;
+      margin: 0px 0px 8px;
+    }
+  
+    .form-text {
+      color: $text-color-secondary;
+      font-weight: 300;
+      margin: 0px 0px 24px;
+    }
+
+    .student-info {
+      background: $form-bg-color;
+      border-radius: 7px;
+
+      .input-group {
+        border-bottom: 1px solid $form-border-color;
+        padding: 15px 15px;
+
+        label {
+          display: block;
+          color: $form-text-color-secondary;
+          font-size: 13px;
+          margin-bottom: 5px;
+        }
+
+        input {
+          width: 100%;
+          border: none;
+          padding: 5px 10px;
+          font-size: 20px;
+          color: $form-text-color-primary;
+          border: 1px solid $form-border-color;
+          border-radius: 3px;
+
+          &.error {
+            border-color: $form-border-error-color;
+          }
+        }
+
+        .input-range {
+          display: flex;
+
+          output {
+            color: $form-text-color-primary;
+            padding-left: 8px;
+            padding-top: 5px;
+          }
+        }
+
+        .error-text {
+          color: $form-border-error-color;
+          font-size: 13px;
+          display: block;
+          margin-top: 3px;
+        }
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+
+    fieldset {
+      color: $form-text-color-primary;
+      background: $form-bg-color;
+      border: none;
+      border-radius: 7px;
+      margin: 15px 0px 0px;
+      padding: 15px 15px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      legend {
+        color: $form-text-color-secondary;
+        font-size: 13px;
+        padding: 0px;
+      }
+    }
+
+    .submit-button {
+      width: 100%;
+      height: 54px;
+      text-align: center;
+      margin-top: 20px;
+    }
+  }
+}
