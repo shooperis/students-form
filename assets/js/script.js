@@ -1,8 +1,7 @@
 let studentsData;
 
-function studentsForm(formSelector, listSelector) {
+function studentsForm(formSelector) {
   let form = document.querySelector(formSelector);
-  let studentsList = document.querySelector(listSelector);
   let rangeElement = document.querySelector('#it-skills');
 
   form.addEventListener('submit', function(event) {
