@@ -1,3 +1,5 @@
+let studentsData;
+
 function studentsForm(formSelector, listSelector) {
   let form = document.querySelector(formSelector);
   let studentsList = document.querySelector(listSelector);
@@ -12,9 +14,7 @@ function studentsForm(formSelector, listSelector) {
       return;
     }
 
-    let entryStr = '';
-    let studentNames = [];
-    let entryHasHiddenValues = false;
+    let entryDataObj = {};
 
     studentInputs.forEach(input => {
       let entryName;
@@ -33,55 +33,26 @@ function studentsForm(formSelector, listSelector) {
       }
 
       if (entryName && entryValue) {
-        if (entryName == 'First name') {
-          entryStr += `<h3>${entryValue}</h3>`;
-          studentNames.push(entryValue);
-        } else if (entryName == 'Last name') {
-          entryStr += `<h4>${entryValue}</h4>`;
-          studentNames.push(entryValue);
-        } else if (entryName == 'Phone' || entryName == 'Email') {
-          entryStr += `<p>${entryName}: <span class="personal-info" data-value="${entryValue}">***</span></p>`;
-          entryHasHiddenValues = true;
+        //Does object key already exist
+        if(entryDataObj[entryName]) {
+
+          //Create array with old value
+          if (!Array.isArray(entryDataObj[entryName])) {
+            entryDataObj[entryName] = [entryDataObj[entryName]];
+          }
+
+          entryDataObj[entryName].push(entryValue);
         } else {
-          entryStr += `<p>${entryName}: ${entryValue}</p>`;
+          entryDataObj[entryName] = entryValue;
         }
       }
     });
 
-    if (entryStr) {
-      let studentListElement = document.createElement('div');
-      studentListElement.classList.add('student-item');
-      studentListElement.innerHTML = entryStr;
-
-      if (entryHasHiddenValues) {
-        let hiddenInfoButton = document.createElement('button');
-        hiddenInfoButton.classList.add('show-personal-info-button', 'btn', 'small-btn');
-        hiddenInfoButton.textContent = 'Show personal info';
-        studentListElement.append(hiddenInfoButton);
-
-        hiddenInfoButton.addEventListener('click', function (event) {
-          showStudentPersonalData(event.target);
-        });
-      }
-
-      let deleteButton = document.createElement('button');
-      deleteButton.classList.add('delete-button', 'btn', 'small-btn', 'secondary-btn');
-      deleteButton.textContent = 'Delete this student';
-      studentListElement.append(deleteButton);
-
-      deleteButton.addEventListener('click', () => {
-        studentListElement.remove();
-        alert(`Student ${studentNames.join(' ')} was deleted!`, 'secondary');
-      });
-
-      studentsList.prepend(studentListElement);
-      thisForm.reset();
-      alert(`Student ${studentNames.join(' ')} was added!`);
-
-      if (studentsList.parentNode.classList.contains('hidden')) {
-        studentsList.parentNode.classList.remove('hidden');
-      }
-    }
+    studentsData.push(entryDataObj);
+    dbLocalStorage('set', studentsData);
+    alert(`Student ${entryDataObj['First name']} was added!`);
+    renderStudensList('#students-list');
+    thisForm.reset();
   });
 
   rangeElement.addEventListener('input', function(event) {
@@ -124,7 +95,7 @@ function showRangeValue(value, rangeValueElementSelector) {
 
 function showStudentPersonalData(button) {
   className = 'showing-personal-info';
-  studentEntryElement = button.parentElement;
+  studentEntryElement = button.closest('.student-item');
 
   if (studentEntryElement.classList.contains(className)) {
     studentEntryElement.querySelectorAll('span.personal-info').forEach(element => {
@@ -166,4 +137,91 @@ function alert(text, styleClass) {
   }, 3000);
 }
 
+function dbLocalStorage(action) {
+  if (action == 'get') {
+    studentsData = JSON.parse(localStorage.getItem('studentsData'));
+    if (!studentsData) {
+      studentsData = [];
+      dbLocalStorage('set');
+    }
+  } else if (action == 'set') {
+    localStorage.setItem('studentsData', JSON.stringify(studentsData));
+  }
+}
+
+function renderStudensList(listSelector) {
+  let studentsList = document.querySelector(listSelector);
+  studentsList.innerHTML = '';
+
+  if (!studentsData) {
+    dbLocalStorage('get');
+  }
+
+  studentsData.forEach(student => {
+    let entryHTML = '';
+    let entryHasHiddenValues = false;
+
+    Object.keys(student).forEach(function (key) {
+      let entryName = key;
+      let entryValue = student[key];
+      let entryType = typeof entryValue;
+
+      if (entryType == 'object' || entryType == 'array') {
+        let listItems = entryValue.map(item => `<li>${item}</li>`).join('');
+        entryHTML += `<p>${entryName}:<ul>${listItems}</ul></p>`;
+      } else {
+        if (entryName == 'First name') {
+          entryHTML += `<h3>${entryValue}</h3>`;
+        } else if (entryName == 'Last name') {
+          entryHTML += `<h4>${entryValue}</h4>`;
+        } else if (entryName == 'Phone' || entryName == 'Email') {
+          entryHTML += `<p>${entryName}: <span class="personal-info" data-value="${entryValue}">***</span></p>`;
+          entryHasHiddenValues = true;
+        } else {
+          entryHTML += `<p>${entryName}: ${entryValue}</p>`;
+        }
+      }
+    });
+
+    let studentListElement = document.createElement('div');
+    studentListElement.classList.add('student-item');
+    studentListElement.innerHTML = `<div class='content'>${entryHTML}</div>`;
+
+    let buttonsContainer = document.createElement('div');
+    buttonsContainer.classList.add('buttons-wrapper');
+    studentListElement.append(buttonsContainer);
+
+    if (entryHasHiddenValues) {
+      let hiddenInfoButton = document.createElement('button');
+      hiddenInfoButton.classList.add('show-personal-info-button', 'btn', 'small-btn');
+      hiddenInfoButton.textContent = 'Show personal info';
+      buttonsContainer.append(hiddenInfoButton);
+
+      hiddenInfoButton.addEventListener('click', function (event) {
+        showStudentPersonalData(event.target);
+      });
+    }
+
+    let deleteButton = document.createElement('button');
+    deleteButton.classList.add('delete-button', 'btn', 'small-btn', 'secondary-btn');
+    deleteButton.textContent = 'Delete this student';
+    buttonsContainer.append(deleteButton);
+
+    deleteButton.addEventListener('click', (event) => {
+      studentListElement.remove();
+
+      // Need fix this function
+      
+      alert(`Student ${student['First name']} was deleted!`, 'secondary');
+    });
+
+    studentsList.prepend(studentListElement);
+
+    if (studentsList.parentNode.classList.contains('hidden')) {
+      studentsList.parentNode.classList.remove('hidden');
+    }
+  });
+}
+
+renderStudensList('#students-list');
 studentsForm('#students-form', '#students-list');

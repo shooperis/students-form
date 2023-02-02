@@ -29,6 +29,12 @@
       background: $list-bg-color;
       border-radius: 7px;
       padding: 15px 15px;
+      display: flex;
+      flex-wrap: wrap;
+      
+      .buttons-wrapper {
+        align-self: flex-end;
+      }
 
       @include size(md) {
         width: calc(100% / 2 - 18px);
