@@ -96,12 +96,7 @@ function formValidation(form) {
   requiredInputs.forEach(field => {
     let errorElement = field.parentNode.querySelector('.error-text');
 
-    if (field.value) {
-      field.classList.remove('error');
-      if (errorElement) {
-        errorElement.remove();
-      }
-    } else {
+    if (!field.value) {
       field.classList.add('error');
       if (!errorElement) {
         let errorElement = document.createElement('span');
@@ -110,6 +105,11 @@ function formValidation(form) {
         field.parentNode.insertBefore(errorElement, field.nextSibling);
       }
       validationError = true;
+    } else {
+      field.classList.remove('error');
+      if (errorElement) {
+        errorElement.remove();
+      }
     }
   });
 
