@@ -5,9 +5,10 @@ function studentsForm(formSelector, listSelector) {
 
   form.addEventListener('submit', function(event) {
     event.preventDefault();
-    let studentInputs = form.querySelectorAll('input');
+    let thisForm = event.target;
+    let studentInputs = thisForm.querySelectorAll('input');
 
-    if (formValidation(form)) {
+    if (formValidation(thisForm)) {
       return;
     }
 
@@ -74,7 +75,7 @@ function studentsForm(formSelector, listSelector) {
       });
 
       studentsList.prepend(studentListElement);
-      form.reset();
+      thisForm.reset();
       alert(`Student ${studentNames.join(' ')} was added!`);
 
       if (studentsList.parentNode.classList.contains('hidden')) {
@@ -166,14 +167,3 @@ function alert(text, styleClass) {
 }
 
 studentsForm('#students-form', '#students-list');
-
-
-
-
-// PENKTA UŽDUOTIS (formos validacija naudojant JavaScript):
-// 1. Priduodant formą (submit) patikrinti ar privalomi laukeliai nėra tušti.
-// 2. Jeigu bent vienas privalomas formos laukelis yra tuščias:
-//     2.1. Formos alert žinutėje reikia parašyti, jog ne visi laukeliai yra užpildyti. Šis tekstas turi būti raudonos spalvos.
-//     2.2. Kiekvienas privalomas input laukelis, kuris nėra užpildytas:
-//         2.2.1. Turi būti apvestas raudonu rėmeliu.
-//         2.2.2. Šalia laukelio turi būti parašytas raudonas tekstas: „Šis laukelis yra privalomas".
