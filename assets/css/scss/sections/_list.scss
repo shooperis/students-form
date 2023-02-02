@@ -31,8 +31,13 @@
       padding: 15px 15px;
       display: flex;
       flex-wrap: wrap;
-      
+
+      .content {
+        width: 100%;
+      }
+
       .buttons-wrapper {
+        width: 100%;
         align-self: flex-end;
       }
 
