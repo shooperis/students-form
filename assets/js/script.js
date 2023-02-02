@@ -207,11 +207,12 @@ function renderStudensList(listSelector) {
     deleteButton.textContent = 'Delete this student';
     buttonsContainer.append(deleteButton);
 
-    deleteButton.addEventListener('click', (event) => {
+    deleteButton.addEventListener('click', () => {
+      studentsData = studentsData.filter(entry => {
+        return entry !== student;
+      });
+      dbLocalStorage('set');
       studentListElement.remove();
-
-      // Need fix this function
-      
       alert(`Student ${student['First name']} was deleted!`, 'secondary');
     });
 
