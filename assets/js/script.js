@@ -14,6 +14,7 @@ function studentsForm(formSelector) {
     }
 
     let entryDataObj = {};
+    let personalInfoArray = [];
 
     studentInputs.forEach(input => {
       let entryName;
@@ -31,6 +32,10 @@ function studentsForm(formSelector) {
         }
       }
 
+      if (input.dataset.personalInfo == 'true') {
+        personalInfoArray.push(entryName);
+      }
+
       if (entryName && entryValue) {
         //Does object key already exist
         if(entryDataObj[entryName]) {
@@ -46,6 +51,10 @@ function studentsForm(formSelector) {
         }
       }
     });
+
+    if (personalInfoArray.length) {
+      entryDataObj['settings-personal-info'] = personalInfoArray;
+    }
 
     studentsData.push(entryDataObj);
     dbLocalStorage('set', studentsData);
@@ -193,6 +202,11 @@ function renderStudensList(listSelector) {
   studentsData.forEach(student => {
     let entryHTML = '';
     let entryHasHiddenValues = false;
+    let entryPersonalInfoSettingsArray = [];
+
+    if (student['settings-personal-info']) {
+      entryPersonalInfoSettingsArray = student['settings-personal-info'];
+    }
 
     Object.keys(student).forEach(function (key) {
       let entryName = key;
@@ -200,14 +214,17 @@ function renderStudensList(listSelector) {
       let entryType = typeof entryValue;
 
       if (entryType == 'object' || entryType == 'array') {
-        let listItems = entryValue.map(item => `<li>${item}</li>`).join('');
-        entryHTML += `<p>${entryName}:<ul>${listItems}</ul></p>`;
+        // Remove personal info settings from showing
+        if (entryName != 'settings-personal-info') {
+          let listItems = entryValue.map(item => `<li>${item}</li>`).join('');
+          entryHTML += `<p>${entryName}:<ul>${listItems}</ul></p>`;
+        }
       } else {
         if (entryName == 'First name') {
           entryHTML += `<h3>${entryValue}</h3>`;
         } else if (entryName == 'Last name') {
           entryHTML += `<h4>${entryValue}</h4>`;
-        } else if (entryName == 'Phone' || entryName == 'Email') {
+        } else if (entryPersonalInfoSettingsArray.includes(entryName)) {
           entryHTML += `<p>${entryName}: <span class="personal-info" data-value="${entryValue}">***</span></p>`;
           entryHasHiddenValues = true;
         } else {
