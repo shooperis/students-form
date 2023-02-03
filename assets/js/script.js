@@ -1,13 +1,15 @@
 let studentsData;
+const form = document.querySelector('#students-form');
+const studentsList = document.querySelector('#students-list');
 
-function studentsForm(formSelector) {
-  let form = document.querySelector(formSelector);
+function studentsForm() {
   let rangeElement = document.querySelector('#it-skills');
 
   form.addEventListener('submit', function(event) {
     event.preventDefault();
     let thisForm = event.target;
     let studentInputs = thisForm.querySelectorAll('input');
+    let formAction = form.getAttribute('data-action');
 
     if (formValidation(thisForm)) {
       return;
@@ -63,15 +65,44 @@ function studentsForm(formSelector) {
       entryDataObj['settings-personal-info'] = personalInfoArray;
     }
 
-    studentsData.push(entryDataObj);
+    if (formAction == 'edit') {
+      let studentToEditId = form.getAttribute('data-edit-id');
+
+      if (studentsData[studentToEditId]) {
+        studentsData[studentToEditId] = entryDataObj;
+        alert(`Student ${entryDataObj['first-name'].value} was edited!`, 'third');
+      }
+    } else {
+      studentsData.push(entryDataObj);
+      alert(`Student ${entryDataObj['first-name'].value} was added!`);
+    }
+
     dbLocalStorage('set', studentsData);
-    alert(`Student ${entryDataObj['first-name'].value} was added!`);
-    renderStudensList('#students-list');
+    renderStudentsList();
     thisForm.reset();
+    scrollTo(studentsList.parentElement);
+  });
+
+  form.addEventListener('reset', () => {
+    form.removeAttribute('data-action');
+    form.removeAttribute('data-edit-id');
+    form.querySelector('button[type="submit"]').innerText = 'Save';
+
+    form.querySelectorAll('input, .error-text').forEach(element => {
+      if (element.classList.contains('error-text')) {
+        element.remove();
+      } else {
+        element.classList.remove('error');
+      }
+
+      if (element.type == 'range') {
+        showRangeValue(element.value, element);
+      }
+    });
   });
 
   rangeElement.addEventListener('input', function(event) {
-    showRangeValue(event.target.value, '#it-skills-value');
+    showRangeValue(event.target.value, event.target);
   });
 }
 
@@ -137,9 +168,8 @@ function formValidation(form) {
   return validationError;
 }
 
-function showRangeValue(value, rangeValueElementSelector) {
-  let rangeValueElement = document.querySelector(rangeValueElementSelector);
-  rangeValueElement.textContent = value;
+function showRangeValue(value, rangeElement) {
+  rangeElement.parentElement.querySelector('output').textContent = value;
 }
 
 function showStudentPersonalData(button) {
@@ -198,15 +228,14 @@ function dbLocalStorage(action) {
   }
 }
 
-function renderStudensList(listSelector) {
-  let studentsList = document.querySelector(listSelector);
+function renderStudentsList() {
   studentsList.innerHTML = '';
 
   if (!studentsData) {
     dbLocalStorage('get');
   }
 
-  studentsData.forEach(student => {
+  studentsData.forEach((student, index) => {
     let entryHTML = '';
     let entryHasHiddenValues = false;
     let entryPersonalInfoSettingsArray = [];
@@ -262,15 +291,47 @@ function renderStudensList(listSelector) {
       });
     }
 
+    let editButton = document.createElement('button');
+    editButton.classList.add('edit-button', 'btn', 'small-btn');
+    editButton.textContent = 'Edit this student';
+    buttonsContainer.append(editButton);
+
+    editButton.addEventListener('click', () => {
+      form.reset();
+
+      Object.keys(student).forEach(function (key) {
+        let entryId = key;
+        let entryValue = student[key].value;
+
+        form.querySelectorAll(`[name="${entryId}"]`).forEach(input => {
+          if (input.type == 'checkbox' || input.type == 'radio') {
+            if (entryValue.includes(input.value)) {
+              input.checked = true;
+            }
+          } else {
+            input.value = entryValue;
+
+            if (input.type == 'range') {
+              showRangeValue(entryValue, input);
+            }
+          }
+        });
+      });
+
+      form.setAttribute('data-action', 'edit');
+      form.setAttribute('data-edit-id', index);
+      form.querySelector('button[type="submit"]').innerText = 'Edit';
+
+      scrollTo(form.parentElement);
+    });
+
     let deleteButton = document.createElement('button');
     deleteButton.classList.add('delete-button', 'btn', 'small-btn', 'secondary-btn');
     deleteButton.textContent = 'Delete this student';
     buttonsContainer.append(deleteButton);
 
     deleteButton.addEventListener('click', () => {
-      studentsData = studentsData.filter(entry => {
-        return entry !== student;
-      });
+      studentsData.splice(index, 1);
       dbLocalStorage('set');
       studentListElement.remove();
       alert(`Student ${student['first-name'].value} was deleted!`, 'secondary');
@@ -284,5 +345,9 @@ function renderStudensList(listSelector) {
   });
 }
 
-renderStudensList('#students-list');
-studentsForm('#students-form', '#students-list');
+function scrollTo(element) {
+  element.scrollIntoView({behavior: "smooth"});
+}
+
+renderStudentsList();
+studentsForm();
