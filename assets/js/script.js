@@ -17,6 +17,7 @@ function studentsForm(formSelector) {
     let personalInfoArray = [];
 
     studentInputs.forEach(input => {
+      let entryId = input.name;
       let entryName;
       let entryValue;
 
@@ -33,21 +34,27 @@ function studentsForm(formSelector) {
       }
 
       if (input.dataset.personalInfo == 'true') {
-        personalInfoArray.push(entryName);
+        personalInfoArray.push(entryId);
       }
 
-      if (entryName && entryValue) {
+      if (entryId && entryName && entryValue) {
         //Does object key already exist
-        if(entryDataObj[entryName]) {
+        if(entryDataObj[entryId]) {
 
           //Create array with old value
-          if (!Array.isArray(entryDataObj[entryName])) {
-            entryDataObj[entryName] = [entryDataObj[entryName]];
+          if (!Array.isArray(entryDataObj[entryId].value)) {
+            entryDataObj[entryId] = {
+              ['name']: entryName,
+              ['value']: [entryDataObj[entryId].value]
+            };
           }
 
-          entryDataObj[entryName].push(entryValue);
+          entryDataObj[entryId].value.push(entryValue);
         } else {
-          entryDataObj[entryName] = entryValue;
+          entryDataObj[entryId] = {
+            ['name']: entryName,
+            ['value']: entryValue
+          };
         }
       }
     });
@@ -58,7 +65,7 @@ function studentsForm(formSelector) {
 
     studentsData.push(entryDataObj);
     dbLocalStorage('set', studentsData);
-    alert(`Student ${entryDataObj['First name']} was added!`);
+    alert(`Student ${entryDataObj['first-name'].value} was added!`);
     renderStudensList('#students-list');
     thisForm.reset();
   });
@@ -209,26 +216,29 @@ function renderStudensList(listSelector) {
     }
 
     Object.keys(student).forEach(function (key) {
-      let entryName = key;
-      let entryValue = student[key];
+      let entryId = key;
+      let entryName = student[key].name;
+      let entryValue = student[key].value;
       let entryType = typeof entryValue;
 
-      if (entryType == 'object' || entryType == 'array') {
-        // Remove personal info settings from showing
-        if (entryName != 'settings-personal-info') {
-          let listItems = entryValue.map(item => `<li>${item}</li>`).join('');
-          entryHTML += `<p>${entryName}:<ul>${listItems}</ul></p>`;
-        }
-      } else {
-        if (entryName == 'First name') {
-          entryHTML += `<h3>${entryValue}</h3>`;
-        } else if (entryName == 'Last name') {
-          entryHTML += `<h4>${entryValue}</h4>`;
-        } else if (entryPersonalInfoSettingsArray.includes(entryName)) {
-          entryHTML += `<p>${entryName}: <span class="personal-info" data-value="${entryValue}">***</span></p>`;
-          entryHasHiddenValues = true;
+      if (entryName && entryValue) {
+        if (entryType == 'object' || entryType == 'array') {
+          // Remove personal info settings from showing
+          if (entryName != 'settings-personal-info') {
+            let listItems = entryValue.map(item => `<li>${item}</li>`).join('');
+            entryHTML += `<p>${entryName}:<ul>${listItems}</ul></p>`;
+          }
         } else {
-          entryHTML += `<p>${entryName}: ${entryValue}</p>`;
+          if (entryId == 'first-name') {
+            entryHTML += `<h3>${entryValue}</h3>`;
+          } else if (entryId == 'last-name') {
+            entryHTML += `<h4>${entryValue}</h4>`;
+          } else if (entryPersonalInfoSettingsArray.includes(entryId)) {
+            entryHTML += `<p>${entryName}: <span class="personal-info" data-value="${entryValue}">***</span></p>`;
+            entryHasHiddenValues = true;
+          } else {
+            entryHTML += `<p>${entryName}: ${entryValue}</p>`;
+          }
         }
       }
     });
@@ -263,7 +273,7 @@ function renderStudensList(listSelector) {
       });
       dbLocalStorage('set');
       studentListElement.remove();
-      alert(`Student ${student['First name']} was deleted!`, 'secondary');
+      alert(`Student ${student['first-name'].value} was deleted!`, 'secondary');
     });
 
     studentsList.prepend(studentListElement);
