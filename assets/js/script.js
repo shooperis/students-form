@@ -243,7 +243,7 @@ function renderStudensList(listSelector) {
 
     if (entryHasHiddenValues) {
       let hiddenInfoButton = document.createElement('button');
-      hiddenInfoButton.classList.add('show-personal-info-button', 'btn', 'small-btn');
+      hiddenInfoButton.classList.add('show-personal-info-button', 'btn', 'small-btn', 'third-btn');
       hiddenInfoButton.textContent = 'Show personal info';
       buttonsContainer.append(hiddenInfoButton);
 
