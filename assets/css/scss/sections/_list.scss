@@ -34,11 +34,39 @@
 
       .content {
         width: 100%;
+
+        h3, h4 {
+          color: $list-text-color-primary;
+          margin: 0px;
+        }
+  
+        h3 + h4 {
+          margin-top: 7px;
+        }
+  
+        p {
+          margin: 8px 0px;
+        }
+
+        ul {
+          padding-left: 30px;
+          margin: 10px 0px;
+        }
       }
 
       .buttons-wrapper {
         width: 100%;
         align-self: flex-end;
+        padding-top: 15px;
+        border-top: 1px solid #e6edf1;
+
+        button {
+          width: 100%;
+        }
+  
+        button + button {
+          margin-top: 10px;
+        }
       }
 
       @include size(md) {
@@ -48,28 +76,6 @@
       @include size(sm) {
         width: 100%;
       }
-
-      h3, h4 {
-        color: $list-text-color-primary;
-        margin: 0px;
-      }
-
-      h3 + h4 {
-        margin-top: 7px;
-      }
-
-      p {
-        margin: 8px 0px;
-      }
-
-      button {
-        width: 100%;
-      }
-
-      button + button {
-        margin-top: 10px;
-      }
     }
-  
   }
 }

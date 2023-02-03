@@ -249,9 +249,31 @@ body {
 .students-list-wrapper #students-list .student-item .content {
   width: 100%;
 }
+.students-list-wrapper #students-list .student-item .content h3, .students-list-wrapper #students-list .student-item .content h4 {
+  color: #495057;
+  margin: 0px;
+}
+.students-list-wrapper #students-list .student-item .content h3 + h4 {
+  margin-top: 7px;
+}
+.students-list-wrapper #students-list .student-item .content p {
+  margin: 8px 0px;
+}
+.students-list-wrapper #students-list .student-item .content ul {
+  padding-left: 30px;
+  margin: 10px 0px;
+}
 .students-list-wrapper #students-list .student-item .buttons-wrapper {
   width: 100%;
   align-self: flex-end;
+  padding-top: 15px;
+  border-top: 1px solid #e6edf1;
+}
+.students-list-wrapper #students-list .student-item .buttons-wrapper button {
+  width: 100%;
+}
+.students-list-wrapper #students-list .student-item .buttons-wrapper button + button {
+  margin-top: 10px;
 }
 @media only screen and (max-width: 992px) {
   .students-list-wrapper #students-list .student-item {
@@ -262,20 +284,4 @@ body {
   .students-list-wrapper #students-list .student-item {
     width: 100%;
   }
-}
-.students-list-wrapper #students-list .student-item h3, .students-list-wrapper #students-list .student-item h4 {
-  color: #495057;
-  margin: 0px;
-}
-.students-list-wrapper #students-list .student-item h3 + h4 {
-  margin-top: 7px;
-}
-.students-list-wrapper #students-list .student-item p {
-  margin: 8px 0px;
-}
-.students-list-wrapper #students-list .student-item button {
-  width: 100%;
-}
-.students-list-wrapper #students-list .student-item button + button {
-  margin-top: 10px;
 }/*# sourceMappingURL=style.css.map */
