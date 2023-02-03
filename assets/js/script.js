@@ -62,19 +62,53 @@ function studentsForm(formSelector) {
 function formValidation(form) {
   let validationError = false;
   let requiredInputs = form.querySelectorAll('[required]');
-  let errorText = 'This field is required';
 
   requiredInputs.forEach(field => {
     let errorElement = field.parentNode.querySelector('.error-text');
-
+    let errorMessage = '';
+    let fieldMinLength = field.dataset.vldtMinLength;
+    let fieldMaxLength = field.dataset.vldtMaxLength;
+    let fieldMinNumb = field.dataset.vldtMinNumb;
+    let fieldMaxNumb = field.dataset.vldtMaxNumb;
+    
     if (!field.value) {
+      errorMessage = field.dataset.vldtMsgRequired;
+    } else {
+
+      if (fieldMinLength && field.value.length < fieldMinLength) {
+        errorMessage = field.dataset.vldtMsgMinLength;
+      }
+
+      if (fieldMaxLength && field.value.length > fieldMaxLength) {
+        errorMessage = field.dataset.vldtMsgMaxLength;
+      }
+
+      if (fieldMinNumb && Number(field.value) < fieldMinNumb) {
+        errorMessage = field.dataset.vldtMsgMinNumb;
+      }
+
+      if (fieldMaxNumb && Number(field.value) > fieldMaxNumb) {
+        errorMessage = field.dataset.vldtMsgMaxNumb;
+      }
+
+      if (field.type == 'email') {
+        if (!field.value.includes('@') || !field.value.includes('.')) {
+          errorMessage = field.dataset.vldtMsgEmail;
+        }
+      }
+    }
+
+    if (errorMessage) {
       field.classList.add('error');
       if (!errorElement) {
         let errorElement = document.createElement('span');
         errorElement.classList.add('error-text');
-        errorElement.textContent = errorText;
+        errorElement.textContent = errorMessage;
         field.parentNode.insertBefore(errorElement, field.nextSibling);
+      } else  {
+        errorElement.textContent = errorMessage;
       }
+
       validationError = true;
     } else {
       field.classList.remove('error');

@@ -25,27 +25,27 @@
             <div class="student-info">
               <div class="input-group">
                 <label for="first-name">First name</label>
-                <input name="first-name" id="first-name" type="text" required>
+                <input name="first-name" id="first-name" type="text" data-vldt-min-length="3" data-vldt-msg-min-length="This field should be at least 3 characters" data-vldt-msg-required="This field is required" required>
               </div>
               
               <div class="input-group">
                 <label for="last-name">Last name</label>
-                <input name="last-name" id="last-name" type="text" required>
+                <input name="last-name" id="last-name" type="text" data-vldt-min-length="3" data-vldt-msg-min-length="This field should be at least 3 characters" data-vldt-msg-required="This field is required" required>
               </div>
                 
               <div class="input-group">
                 <label for="age">Age</label>
-                <input name="age" id="age" type="number" min="1" max="150" required>
+                <input name="age" id="age" type="number" min="-10" max="200" data-vldt-min-numb="1" data-vldt-max-numb="120" data-vldt-msg-min-numb="This field can't be less than 1" data-vldt-msg-max-numb="This field can't be more than 120" data-vldt-msg-required="This field is required" required>
               </div>
                 
               <div class="input-group">
                 <label for="phone">Phone</label>
-                <input name="phone" id="phone" type="tel">
+                <input name="phone" id="phone" type="tel" data-vldt-min-length="9" data-vldt-max-length="12" data-vldt-msg-min-length="This field should be at least 9 numbers" data-vldt-msg-max-length="This field should be not more than 12 numbers" data-vldt-msg-required="This field is required" required>
               </div>
                 
               <div class="input-group">
                 <label for="email">Email</label>
-                <input name="email" id="email" type="email" required>
+                <input name="email" id="email" type="email" data-vldt-min-length="8" data-vldt-msg-min-length="This field should be at least 8 characters" data-vldt-msg-email="This field should @ and . characters" data-vldt-msg-required="This field is required" required>
               </div>
                 
               <div class="input-group">
