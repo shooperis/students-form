@@ -6,6 +6,8 @@ const studentsList = document.querySelector('#students-list');
 function studentsForm() {
   let rangeElement = document.querySelector('#it-skills');
 
+  holdFormData();
+
   form.addEventListener('submit', function(event) {
     event.preventDefault();
     let thisForm = event.target;
@@ -85,6 +87,7 @@ function studentsForm() {
   form.addEventListener('reset', function(event) {
     let thisForm = event.target;
     studentToEditId = null;
+    localStorage.removeItem('formInputsObject');
 
     thisForm.querySelector('button[type="submit"]').innerText = 'Save';
 
@@ -311,20 +314,8 @@ function renderStudentsList(filteredStudentsData = false) {
         Object.keys(student).forEach(function (key) {
           let entryId = key;
           let entryValue = student[key].value;
-  
-          form.querySelectorAll(`[name="${entryId}"]`).forEach(input => {
-            if (input.type == 'checkbox' || input.type == 'radio') {
-              if (entryValue.includes(input.value)) {
-                input.checked = true;
-              }
-            } else {
-              input.value = entryValue;
-  
-              if (input.type == 'range') {
-                showRangeValue(entryValue, input);
-              }
-            }
-          });
+
+          setDataToForm(entryId, entryValue);
         });
 
         studentToEditId = index;
@@ -352,6 +343,22 @@ function renderStudentsList(filteredStudentsData = false) {
     noDataElement.textContent = 'No students found';
     studentsList.prepend(noDataElement);
   }
+}
+
+function setDataToForm(entryId, entryValue) {
+  form.querySelectorAll(`[name="${entryId}"]`).forEach(input => {
+    if (input.type == 'checkbox' || input.type == 'radio') {
+      if (entryValue.includes(input.value)) {
+        input.checked = true;
+      }
+    } else {
+      input.value = entryValue;
+
+      if (input.type == 'range') {
+        showRangeValue(entryValue, input);
+      }
+    }
+  });
 }
 
 function scrollTo(element) {
@@ -431,6 +438,42 @@ function renderFiltersForm(studentsFilterFormSelector) {
     }
 
     scrollTo(studentsList.parentElement);
+  });
+}
+
+function holdFormData() {
+  formInputsObject = JSON.parse(localStorage.getItem('formInputsObject'));
+
+  if (!formInputsObject) {
+    formInputsObject = {};
+  }
+
+  Object.keys(formInputsObject).forEach(function (key) {
+    let entryId = key;
+    let entryValue = formInputsObject[key];
+    setDataToForm(entryId, entryValue);
+  });
+  
+  // Hold form inputs data
+  form.querySelectorAll('input').forEach(input => {
+    input.addEventListener('input', (event) => {
+      if (studentToEditId == null) {
+        let inputName = event.target.name;
+        let inputValue = event.target.value;
+        let inputType = event.target.type;
+
+        if(inputType == 'checkbox') {
+          formInputsObject[inputName] = [];
+          form.querySelectorAll(`input[name='${inputName}']:checked`).forEach(selectedCheckBoxes => {
+            formInputsObject[inputName].push(selectedCheckBoxes.value);
+          });
+        } else {
+          formInputsObject[inputName] = inputValue;
+        }
+
+        localStorage.setItem('formInputsObject', JSON.stringify(formInputsObject));
+      }
+    });
   });
 }
 
