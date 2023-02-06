@@ -1,4 +1,5 @@
 let studentsData;
+let studentToEditId = null;
 const form = document.querySelector('#students-form');
 const studentsList = document.querySelector('#students-list');
 
@@ -65,9 +66,7 @@ function studentsForm() {
       entryDataObj['settings-personal-info'] = personalInfoArray;
     }
 
-    if (formAction == 'edit') {
-      let studentToEditId = form.getAttribute('data-edit-id');
-
+    if (studentToEditId != null) {
       if (studentsData[studentToEditId]) {
         studentsData[studentToEditId] = entryDataObj;
         alert(`Student ${entryDataObj['first-name'].value} was edited!`, 'third');
@@ -85,8 +84,8 @@ function studentsForm() {
 
   form.addEventListener('reset', function(event) {
     let thisForm = event.target;
-    thisForm.removeAttribute('data-action');
-    thisForm.removeAttribute('data-edit-id');
+    studentToEditId = null;
+
     thisForm.querySelector('button[type="submit"]').innerText = 'Save';
 
     thisForm.querySelectorAll('input, .error-text').forEach(element => {
@@ -327,11 +326,9 @@ function renderStudentsList(filteredStudentsData = false) {
             }
           });
         });
-  
-        form.setAttribute('data-action', 'edit');
-        form.setAttribute('data-edit-id', index);
+
+        studentToEditId = index;
         form.querySelector('button[type="submit"]').innerText = 'Save changes';
-  
         scrollTo(form.parentElement);
       });
   
