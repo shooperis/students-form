@@ -96,7 +96,7 @@ function studentsForm() {
         element.classList.remove('error');
       }
 
-      if (element.type == 'range') 
+      if (element.type == 'range') {
         showRangeValue(element.value, element);
       }
     });
