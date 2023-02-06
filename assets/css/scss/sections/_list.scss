@@ -8,14 +8,89 @@
     width: 100%;
   }
 
-  .list-title {
-    font-size: 28px;
-    font-weight: 400;
-    margin: 25px 0px 20px;
-  }
+  .students-list-header {
+    margin: 25px 0px;
 
-  &.hidden {
-    display: none;
+    .title-wrapper {
+      display: flex;
+      align-items: center;
+
+      .list-title {
+        font-size: 28px;
+        font-weight: 400;
+        margin: 0px;
+        flex-grow: 1;
+      }
+
+      #show-filters {
+        width: 30px;
+        height: 30px;
+        background-image: url('../images/icon-filter.svg');
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position: center;
+        background-color: transparent;
+        border: none;
+        font-size: 0px;
+        padding: 0px;
+        cursor: pointer;
+        opacity: 0.6;
+
+        &.active {
+          opacity: 1;
+        }
+      }
+    }
+
+    #students-filter-wrapper {
+      overflow: hidden;
+      max-height: 400px;
+      transition: max-height 0.3s ease-in-out;
+
+      &.hidden {
+        max-height: 0px;
+      }
+    }
+
+    #students-filter {
+      background: $form-bg-color;
+      border-radius: 7px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 10px;
+      margin-top: 10px;
+
+      .input-group {
+        label {
+          color: $form-text-color-secondary;
+          font-size: 13px;
+
+          @include size(sm) {
+            display: block;
+          }
+        }
+
+        input, select {
+          border: none;
+          padding: 5px 10px;
+          font-size: 14px;
+          color: $form-text-color-primary;
+          border: 1px solid $form-border-color;
+          border-radius: 3px;
+
+          @include size(sm) {
+            width: 100%;
+          }
+        }
+      }
+
+      @include size(sm) {
+        .input-group, .filter-button {
+          width: 100%;
+        }
+      }
+    }
   }
 
   #students-list {
@@ -76,6 +151,13 @@
       @include size(sm) {
         width: 100%;
       }
+    }
+
+    .no-data {
+      width: 100%;
+      font-size: 28px;
+      text-align: center;
+      margin: 50px 0px 30px;
     }
   }
 }

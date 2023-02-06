@@ -113,7 +113,29 @@
     </section>
 
     <section class="students-list-wrapper hidden">
-      <h2 class="list-title">Students list</h2>
+      <div class="students-list-header">
+        <div class="title-wrapper">
+          <h2 class="list-title">Students list</h2>
+          <button id="show-filters">Filters</button>
+        </div>
+        
+        <div id="students-filter-wrapper" class="hidden">
+          <form id="students-filter" novalidate>
+            <div class="input-group">
+              <label for="keywords">Keyword</label>
+              <input name="keywords" id="keywords" type="text">
+            </div>
+            <div class="input-group">
+              <label for="fields">Fields</label>
+              <select name="fields" id="fields">
+                <option value="" selected>Show all</option>
+              </select>
+            </div>
+            <button class="filter-button btn small-btn" type="submit">Filter it</button>
+          </form>
+        </div>
+      </div>
+
       <div id="students-list"></div>
     </section>
   </div>

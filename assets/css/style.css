@@ -236,13 +236,79 @@ body {
     width: 100%;
   }
 }
-.students-list-wrapper .list-title {
+.students-list-wrapper .students-list-header {
+  margin: 25px 0px;
+}
+.students-list-wrapper .students-list-header .title-wrapper {
+  display: flex;
+  align-items: center;
+}
+.students-list-wrapper .students-list-header .title-wrapper .list-title {
   font-size: 28px;
   font-weight: 400;
-  margin: 25px 0px 20px;
+  margin: 0px;
+  flex-grow: 1;
 }
-.students-list-wrapper.hidden {
-  display: none;
+.students-list-wrapper .students-list-header .title-wrapper #show-filters {
+  width: 30px;
+  height: 30px;
+  background-image: url("../images/icon-filter.svg");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  font-size: 0px;
+  padding: 0px;
+  cursor: pointer;
+  opacity: 0.6;
+}
+.students-list-wrapper .students-list-header .title-wrapper #show-filters.active {
+  opacity: 1;
+}
+.students-list-wrapper .students-list-header #students-filter-wrapper {
+  overflow: hidden;
+  max-height: 400px;
+  transition: max-height 0.3s ease-in-out;
+}
+.students-list-wrapper .students-list-header #students-filter-wrapper.hidden {
+  max-height: 0px;
+}
+.students-list-wrapper .students-list-header #students-filter {
+  background: #edf2f5;
+  border-radius: 7px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+  margin-top: 10px;
+}
+.students-list-wrapper .students-list-header #students-filter .input-group label {
+  color: #b3b3b3;
+  font-size: 13px;
+}
+@media only screen and (max-width: 768px) {
+  .students-list-wrapper .students-list-header #students-filter .input-group label {
+    display: block;
+  }
+}
+.students-list-wrapper .students-list-header #students-filter .input-group input, .students-list-wrapper .students-list-header #students-filter .input-group select {
+  border: none;
+  padding: 5px 10px;
+  font-size: 14px;
+  color: #495057;
+  border: 1px solid #e6edf1;
+  border-radius: 3px;
+}
+@media only screen and (max-width: 768px) {
+  .students-list-wrapper .students-list-header #students-filter .input-group input, .students-list-wrapper .students-list-header #students-filter .input-group select {
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .students-list-wrapper .students-list-header #students-filter .input-group, .students-list-wrapper .students-list-header #students-filter .filter-button {
+    width: 100%;
+  }
 }
 .students-list-wrapper #students-list {
   display: flex;
@@ -296,4 +362,10 @@ body {
   .students-list-wrapper #students-list .student-item {
     width: 100%;
   }
+}
+.students-list-wrapper #students-list .no-data {
+  width: 100%;
+  font-size: 28px;
+  text-align: center;
+  margin: 50px 0px 30px;
 }/*# sourceMappingURL=style.css.map */

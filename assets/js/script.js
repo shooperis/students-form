@@ -78,7 +78,7 @@ function studentsForm() {
     }
 
     dbLocalStorage('set', studentsData);
-    renderStudentsList();
+    renderStudentsList(studentsData);
     thisForm.reset();
     scrollTo(studentsList.parentElement);
   });
@@ -231,126 +231,207 @@ function dbLocalStorage(action) {
   }
 }
 
-function renderStudentsList() {
+function renderStudentsList(filteredStudentsData = false) {
   studentsList.innerHTML = '';
+  let studentsDataToRender = [];
 
-  if (!studentsData) {
-    dbLocalStorage('get');
+  if (filteredStudentsData) {
+    studentsDataToRender = filteredStudentsData;
+  } else {
+    if (!studentsData) {
+      dbLocalStorage('get');
+    }
+    studentsDataToRender = studentsData;
   }
 
-  studentsData.forEach((student, index) => {
-    let entryHTML = '';
-    let entryHasHiddenValues = false;
-    let entryPersonalInfoSettingsArray = [];
-
-    if (student['settings-personal-info']) {
-      entryPersonalInfoSettingsArray = student['settings-personal-info'];
-    }
-
-    Object.keys(student).forEach(function (key) {
-      let entryId = key;
-      let entryName = student[key].name;
-      let entryValue = student[key].value;
-      let entryType = typeof entryValue;
-
-      if (entryName && entryValue) {
-        if (entryType == 'object' || entryType == 'array') {
-          // Remove personal info settings from showing
-          if (entryName != 'settings-personal-info') {
-            let listItems = entryValue.map(item => `<li>${item}</li>`).join('');
-            entryHTML += `<p>${entryName}:<ul>${listItems}</ul></p>`;
-          }
-        } else {
-          if (entryId == 'first-name') {
-            entryHTML += `<h3>${entryValue}</h3>`;
-          } else if (entryId == 'last-name') {
-            entryHTML += `<h4>${entryValue}</h4>`;
-          } else if (entryPersonalInfoSettingsArray.includes(entryId)) {
-            entryHTML += `<p>${entryName}: <span class="personal-info" data-value="${entryValue}">***</span></p>`;
-            entryHasHiddenValues = true;
-          } else {
-            entryHTML += `<p>${entryName}: ${entryValue}</p>`;
-          }
-        }
+  if (studentsDataToRender.length) {
+    studentsDataToRender.forEach((student, index) => {
+      let entryHTML = '';
+      let entryHasHiddenValues = false;
+      let entryPersonalInfoSettingsArray = [];
+  
+      if (student['settings-personal-info']) {
+        entryPersonalInfoSettingsArray = student['settings-personal-info'];
       }
-    });
-
-    let studentListElement = document.createElement('div');
-    studentListElement.classList.add('student-item');
-    studentListElement.innerHTML = `<div class='content'>${entryHTML}</div>`;
-
-    let buttonsContainer = document.createElement('div');
-    buttonsContainer.classList.add('buttons-wrapper');
-    studentListElement.append(buttonsContainer);
-
-    if (entryHasHiddenValues) {
-      let hiddenInfoButton = document.createElement('button');
-      hiddenInfoButton.classList.add('show-personal-info-button', 'btn', 'small-btn', 'third-btn');
-      hiddenInfoButton.textContent = 'Show personal info';
-      buttonsContainer.append(hiddenInfoButton);
-
-      hiddenInfoButton.addEventListener('click', function (event) {
-        showStudentPersonalData(event.target);
-      });
-    }
-
-    let editButton = document.createElement('button');
-    editButton.classList.add('edit-button', 'btn', 'small-btn');
-    editButton.textContent = 'Edit this student';
-    buttonsContainer.append(editButton);
-
-    editButton.addEventListener('click', () => {
-      form.reset();
-
+  
       Object.keys(student).forEach(function (key) {
         let entryId = key;
+        let entryName = student[key].name;
         let entryValue = student[key].value;
-
-        form.querySelectorAll(`[name="${entryId}"]`).forEach(input => {
-          if (input.type == 'checkbox' || input.type == 'radio') {
-            if (entryValue.includes(input.value)) {
-              input.checked = true;
+        let entryType = typeof entryValue;
+  
+        if (entryName && entryValue) {
+          if (entryType == 'object' || entryType == 'array') {
+            // Remove personal info settings from showing
+            if (entryName != 'settings-personal-info') {
+              let listItems = entryValue.map(item => `<li>${item}</li>`).join('');
+              entryHTML += `<p>${entryName}:<ul>${listItems}</ul></p>`;
             }
           } else {
-            input.value = entryValue;
-
-            if (input.type == 'range') {
-              showRangeValue(entryValue, input);
+            if (entryId == 'first-name') {
+              entryHTML += `<h3>${entryValue}</h3>`;
+            } else if (entryId == 'last-name') {
+              entryHTML += `<h4>${entryValue}</h4>`;
+            } else if (entryPersonalInfoSettingsArray.includes(entryId)) {
+              entryHTML += `<p>${entryName}: <span class="personal-info" data-value="${entryValue}">***</span></p>`;
+              entryHasHiddenValues = true;
+            } else {
+              entryHTML += `<p>${entryName}: ${entryValue}</p>`;
             }
           }
-        });
+        }
       });
-
-      form.setAttribute('data-action', 'edit');
-      form.setAttribute('data-edit-id', index);
-      form.querySelector('button[type="submit"]').innerText = 'Save changes';
-
-      scrollTo(form.parentElement);
+  
+      let studentListElement = document.createElement('div');
+      studentListElement.classList.add('student-item');
+      studentListElement.innerHTML = `<div class='content'>${entryHTML}</div>`;
+  
+      let buttonsContainer = document.createElement('div');
+      buttonsContainer.classList.add('buttons-wrapper');
+      studentListElement.append(buttonsContainer);
+  
+      if (entryHasHiddenValues) {
+        let hiddenInfoButton = document.createElement('button');
+        hiddenInfoButton.classList.add('show-personal-info-button', 'btn', 'small-btn', 'third-btn');
+        hiddenInfoButton.textContent = 'Show personal info';
+        buttonsContainer.append(hiddenInfoButton);
+  
+        hiddenInfoButton.addEventListener('click', function (event) {
+          showStudentPersonalData(event.target);
+        });
+      }
+  
+      let editButton = document.createElement('button');
+      editButton.classList.add('edit-button', 'btn', 'small-btn');
+      editButton.textContent = 'Edit this student';
+      buttonsContainer.append(editButton);
+  
+      editButton.addEventListener('click', () => {
+        form.reset();
+  
+        Object.keys(student).forEach(function (key) {
+          let entryId = key;
+          let entryValue = student[key].value;
+  
+          form.querySelectorAll(`[name="${entryId}"]`).forEach(input => {
+            if (input.type == 'checkbox' || input.type == 'radio') {
+              if (entryValue.includes(input.value)) {
+                input.checked = true;
+              }
+            } else {
+              input.value = entryValue;
+  
+              if (input.type == 'range') {
+                showRangeValue(entryValue, input);
+              }
+            }
+          });
+        });
+  
+        form.setAttribute('data-action', 'edit');
+        form.setAttribute('data-edit-id', index);
+        form.querySelector('button[type="submit"]').innerText = 'Save changes';
+  
+        scrollTo(form.parentElement);
+      });
+  
+      let deleteButton = document.createElement('button');
+      deleteButton.classList.add('delete-button', 'btn', 'small-btn', 'secondary-btn');
+      deleteButton.textContent = 'Delete this student';
+      buttonsContainer.append(deleteButton);
+  
+      deleteButton.addEventListener('click', () => {
+        studentsData.splice(index, 1);
+        dbLocalStorage('set');
+        studentListElement.remove();
+        alert(`Student ${student['first-name'].value} was deleted!`, 'secondary');
+      });
+  
+      studentsList.prepend(studentListElement);
     });
-
-    let deleteButton = document.createElement('button');
-    deleteButton.classList.add('delete-button', 'btn', 'small-btn', 'secondary-btn');
-    deleteButton.textContent = 'Delete this student';
-    buttonsContainer.append(deleteButton);
-
-    deleteButton.addEventListener('click', () => {
-      studentsData.splice(index, 1);
-      dbLocalStorage('set');
-      studentListElement.remove();
-      alert(`Student ${student['first-name'].value} was deleted!`, 'secondary');
-    });
-
-    studentsList.prepend(studentListElement);
-
-    if (studentsList.parentNode.classList.contains('hidden')) {
-      studentsList.parentNode.classList.remove('hidden');
-    }
-  });
+  } else {
+    let noDataElement = document.createElement('div');
+    noDataElement.classList.add('no-data');
+    noDataElement.textContent = 'No students found';
+    studentsList.prepend(noDataElement);
+  }
 }
 
 function scrollTo(element) {
   element.scrollIntoView({behavior: "smooth"});
 }
 
-renderStudentsList();
+function renderFiltersForm(studentsFilterFormSelector) {
+  const studentsFilterForm = document.querySelector(studentsFilterFormSelector);
+  let studentFormInputsArray = [];
+
+  form.querySelectorAll('input').forEach(input => {
+    let inputId = input.name;
+    let inputName;
+
+    if (!input.dataset.personalInfo) {
+      if (input.type == 'radio' || input.type == 'checkbox') {
+        inputName = input.parentNode.parentNode.querySelector('legend').textContent; 
+      } else {
+        inputName = input.closest('.input-group').querySelector('label').textContent;
+      }
+      studentFormInputsArray.push({'id': inputId, 'name': inputName});
+    }
+  });
+
+  let studentFormInputsUniqueArray = studentFormInputsArray.filter((value, index) => {
+    let _value = JSON.stringify(value);
+    return index === studentFormInputsArray.findIndex(obj => {
+      return JSON.stringify(obj) === _value;
+    });
+  });
+
+  let studentsFilterFormSelect = studentsFilterForm.querySelector('#fields');
+  studentFormInputsUniqueArray.forEach(element => {
+    let optionElement = document.createElement('option');
+    optionElement.value = element.id;
+    optionElement.textContent = element.name;
+    studentsFilterFormSelect.append(optionElement);
+  });
+
+  document.querySelector('#show-filters').addEventListener('click', function (event) {
+    event.target.classList.toggle('active');
+    document.querySelector('#students-filter-wrapper').classList.toggle('hidden');
+  });
+
+  studentsFilterForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    let thisForm = event.target;
+    let keywords = thisForm.keywords.value.toLowerCase();
+    let field = thisForm.fields.value;
+
+    if (field) {
+      let filteredStudentsResult = studentsData.filter(student => {
+        let studentFieldValue = student[field].value;
+        let studentFieldValueType = typeof studentFieldValue;
+
+        if (studentFieldValueType == 'object' || studentFieldValueType == 'array') {
+          let studentFieldValueLowered = studentFieldValue.map(element => {
+            return element.toLowerCase();
+          });
+          studentFieldValue = studentFieldValueLowered;
+        } else {
+          studentFieldValue = studentFieldValue.toLowerCase();
+        }
+
+        return studentFieldValue.includes(keywords);
+      });
+
+      renderStudentsList(filteredStudentsResult);
+    } else {
+      renderStudentsList(studentsData);
+      thisForm.reset();
+    }
+
+    scrollTo(studentsList.parentElement);
+  });
+}
+
+renderStudentsList(studentsData);
 studentsForm();
+renderFiltersForm('#students-filter');
