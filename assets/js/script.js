@@ -322,7 +322,7 @@ function renderStudentsList() {
 
       form.setAttribute('data-action', 'edit');
       form.setAttribute('data-edit-id', index);
-      form.querySelector('button[type="submit"]').innerText = 'Edit';
+      form.querySelector('button[type="submit"]').innerText = 'Save changes';
 
       scrollTo(form.parentElement);
     });
