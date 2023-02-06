@@ -12,7 +12,6 @@ function studentsForm() {
     event.preventDefault();
     let thisForm = event.target;
     let studentInputs = thisForm.querySelectorAll('input');
-    let formAction = form.getAttribute('data-action');
 
     if (formValidation(thisForm)) {
       return;
