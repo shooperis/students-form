@@ -83,19 +83,20 @@ function studentsForm() {
     scrollTo(studentsList.parentElement);
   });
 
-  form.addEventListener('reset', () => {
-    form.removeAttribute('data-action');
-    form.removeAttribute('data-edit-id');
-    form.querySelector('button[type="submit"]').innerText = 'Save';
+  form.addEventListener('reset', function(event) {
+    let thisForm = event.target;
+    thisForm.removeAttribute('data-action');
+    thisForm.removeAttribute('data-edit-id');
+    thisForm.querySelector('button[type="submit"]').innerText = 'Save';
 
-    form.querySelectorAll('input, .error-text').forEach(element => {
+    thisForm.querySelectorAll('input, .error-text').forEach(element => {
       if (element.classList.contains('error-text')) {
         element.remove();
       } else {
         element.classList.remove('error');
       }
 
-      if (element.type == 'range') {
+      if (element.type == 'range') 
         showRangeValue(element.value, element);
       }
     });
