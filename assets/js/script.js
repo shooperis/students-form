@@ -181,12 +181,14 @@ function showStudentPersonalData(button) {
       elementContentChanger(element);
     });
     button.textContent = 'Show personal info';
+    button.classList.remove('active');
     studentEntryElement.classList.remove(className);
   } else {
     studentEntryElement.querySelectorAll('span.personal-info').forEach(element => {
       elementContentChanger(element);
     });
     button.textContent = 'Hide personal info';
+    button.classList.add('active');
     studentEntryElement.classList.add(className);
   }
 

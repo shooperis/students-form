@@ -10,7 +10,7 @@
   transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border 0.2s ease-in-out;
   padding: 5px 15px;
 
-  &:hover {
+  &:hover, &.active {
     color: $button-primary-bg-color;
     background-color: $button-primary-text-color;
     border-color: $button-primary-bg-color;
@@ -32,7 +32,7 @@
     color: $button-secondary-text-color;
     background-color: $button-secondary-bg-color;
 
-    &:hover {
+    &:hover, &.active {
       color: $button-secondary-bg-color;
       background-color: $button-secondary-text-color;
       border-color: $button-secondary-bg-color;
@@ -43,7 +43,7 @@
     color: $button-third-text-color;
     background-color: $button-third-bg-color;
 
-    &:hover {
+    &:hover, &.active {
       color: $button-third-bg-color;
       background-color: $button-third-text-color;
       border-color: $button-third-bg-color;
