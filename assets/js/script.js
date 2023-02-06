@@ -391,10 +391,14 @@ function renderFiltersForm(studentsFilterFormSelector) {
     studentsFilterFormSelect.append(optionElement);
   });
 
-  document.querySelector('#show-filters').addEventListener('click', function (event) {
-    event.target.classList.toggle('active');
-    document.querySelector('#students-filter-wrapper').classList.toggle('hidden');
+  document.querySelector('#show-filters-button').addEventListener('click', function (event) {
+    toggleFilter(event.target);
   });
+
+  function toggleFilter(button) {
+    button.classList.toggle('active');
+    document.querySelector('#students-filter-wrapper').classList.toggle('hidden');
+  }
 
   studentsFilterForm.addEventListener('submit', function(event) {
     event.preventDefault();
@@ -422,6 +426,7 @@ function renderFiltersForm(studentsFilterFormSelector) {
       renderStudentsList(filteredStudentsResult);
     } else {
       renderStudentsList(studentsData);
+      toggleFilter(document.querySelector('#show-filters-button'));
       thisForm.reset();
     }
 

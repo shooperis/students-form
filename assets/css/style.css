@@ -249,7 +249,7 @@ body {
   margin: 0px;
   flex-grow: 1;
 }
-.students-list-wrapper .students-list-header .title-wrapper #show-filters {
+.students-list-wrapper .students-list-header .title-wrapper #show-filters-button {
   width: 30px;
   height: 30px;
   background-image: url("../images/icon-filter.svg");
@@ -264,7 +264,7 @@ body {
   opacity: 0.6;
   transition: opacity 0.25s ease-in-out;
 }
-.students-list-wrapper .students-list-header .title-wrapper #show-filters:hover, .students-list-wrapper .students-list-header .title-wrapper #show-filters.active {
+.students-list-wrapper .students-list-header .title-wrapper #show-filters-button:hover, .students-list-wrapper .students-list-header .title-wrapper #show-filters-button.active {
   opacity: 1;
 }
 .students-list-wrapper .students-list-header #students-filter-wrapper {
