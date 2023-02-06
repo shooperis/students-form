@@ -35,8 +35,9 @@
         padding: 0px;
         cursor: pointer;
         opacity: 0.6;
+        transition: opacity 0.25s ease-in-out;
 
-        &.active {
+        &:hover, &.active {
           opacity: 1;
         }
       }
@@ -62,12 +63,17 @@
       margin-top: 10px;
 
       .input-group {
+        @include size(sm) {
+          width: 100%;
+        }
+
         label {
           color: $form-text-color-secondary;
           font-size: 13px;
 
           @include size(sm) {
             display: block;
+            margin-bottom: 3px;
           }
         }
 
@@ -85,9 +91,14 @@
         }
       }
 
-      @include size(sm) {
-        .input-group, .filter-button {
+      .filter-button {
+        padding: 3px 20px;
+
+        @include size(sm) {
           width: 100%;
+          margin-top: 5px;
+          font-size: 15px;
+          padding: 5px 25px;
         }
       }
     }

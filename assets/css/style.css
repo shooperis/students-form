@@ -262,8 +262,9 @@ body {
   padding: 0px;
   cursor: pointer;
   opacity: 0.6;
+  transition: opacity 0.25s ease-in-out;
 }
-.students-list-wrapper .students-list-header .title-wrapper #show-filters.active {
+.students-list-wrapper .students-list-header .title-wrapper #show-filters:hover, .students-list-wrapper .students-list-header .title-wrapper #show-filters.active {
   opacity: 1;
 }
 .students-list-wrapper .students-list-header #students-filter-wrapper {
@@ -283,6 +284,11 @@ body {
   padding: 10px;
   margin-top: 10px;
 }
+@media only screen and (max-width: 768px) {
+  .students-list-wrapper .students-list-header #students-filter .input-group {
+    width: 100%;
+  }
+}
 .students-list-wrapper .students-list-header #students-filter .input-group label {
   color: #b3b3b3;
   font-size: 13px;
@@ -290,6 +296,7 @@ body {
 @media only screen and (max-width: 768px) {
   .students-list-wrapper .students-list-header #students-filter .input-group label {
     display: block;
+    margin-bottom: 3px;
   }
 }
 .students-list-wrapper .students-list-header #students-filter .input-group input, .students-list-wrapper .students-list-header #students-filter .input-group select {
@@ -305,9 +312,15 @@ body {
     width: 100%;
   }
 }
+.students-list-wrapper .students-list-header #students-filter .filter-button {
+  padding: 3px 20px;
+}
 @media only screen and (max-width: 768px) {
-  .students-list-wrapper .students-list-header #students-filter .input-group, .students-list-wrapper .students-list-header #students-filter .filter-button {
+  .students-list-wrapper .students-list-header #students-filter .filter-button {
     width: 100%;
+    margin-top: 5px;
+    font-size: 15px;
+    padding: 5px 25px;
   }
 }
 .students-list-wrapper #students-list {
