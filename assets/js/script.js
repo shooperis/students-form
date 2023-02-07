@@ -410,30 +410,29 @@ function renderFiltersForm(studentsFilterFormSelector) {
     let keywords = thisForm.keywords.value.toLowerCase();
     let field = thisForm.fields.value;
 
-    if (field) {
-      let filteredStudentsResult = studentsData.filter(student => {
-        let studentFieldValue = student[field].value;
-        let studentFieldValueType = typeof studentFieldValue;
+    let filteredStudentsResult = studentsData.filter(student => {
+      let studentFieldValue = student[field].value;
+      let studentFieldValueType = typeof studentFieldValue;
 
-        if (studentFieldValueType == 'object' || studentFieldValueType == 'array') {
-          let studentFieldValueLowered = studentFieldValue.map(element => {
-            return element.toLowerCase();
-          });
-          studentFieldValue = studentFieldValueLowered;
-        } else {
-          studentFieldValue = studentFieldValue.toLowerCase();
-        }
+      if (studentFieldValueType == 'object' || studentFieldValueType == 'array') {
+        let studentFieldValueLowered = studentFieldValue.map(element => {
+          return element.toLowerCase();
+        });
+        studentFieldValue = studentFieldValueLowered;
+      } else {
+        studentFieldValue = studentFieldValue.toLowerCase();
+      }
 
-        return studentFieldValue.includes(keywords);
-      });
+      return studentFieldValue.includes(keywords);
+    });
 
-      renderStudentsList(filteredStudentsResult);
-    } else {
-      renderStudentsList(studentsData);
-      toggleFilter(document.querySelector('#show-filters-button'));
-      thisForm.reset();
-    }
+    renderStudentsList(filteredStudentsResult);
+    scrollTo(studentsList.parentElement);
+  });
 
+  studentsFilterForm.addEventListener('reset', function() {
+    toggleFilter(document.querySelector('#show-filters-button'));
+    renderStudentsList(studentsData);
     scrollTo(studentsList.parentElement);
   });
 }

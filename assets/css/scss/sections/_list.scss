@@ -91,14 +91,24 @@
         }
       }
 
-      .filter-button {
-        padding: 3px 20px;
+      .buttons-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
 
         @include size(sm) {
           width: 100%;
-          margin-top: 5px;
-          font-size: 15px;
-          padding: 5px 25px;
+        }
+
+        .filter-button, .reset-button {
+          padding: 3px 20px;
+  
+          @include size(sm) {
+            width: calc(100% / 2 - 5px);
+            margin-top: 5px;
+            font-size: 15px;
+            padding: 5px 25px;
+          }
         }
       }
     }

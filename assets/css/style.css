@@ -312,12 +312,22 @@ body {
     width: 100%;
   }
 }
-.students-list-wrapper .students-list-header #students-filter .filter-button {
+.students-list-wrapper .students-list-header #students-filter .buttons-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+@media only screen and (max-width: 768px) {
+  .students-list-wrapper .students-list-header #students-filter .buttons-wrapper {
+    width: 100%;
+  }
+}
+.students-list-wrapper .students-list-header #students-filter .buttons-wrapper .filter-button, .students-list-wrapper .students-list-header #students-filter .buttons-wrapper .reset-button {
   padding: 3px 20px;
 }
 @media only screen and (max-width: 768px) {
-  .students-list-wrapper .students-list-header #students-filter .filter-button {
-    width: 100%;
+  .students-list-wrapper .students-list-header #students-filter .buttons-wrapper .filter-button, .students-list-wrapper .students-list-header #students-filter .buttons-wrapper .reset-button {
+    width: calc(50% - 5px);
     margin-top: 5px;
     font-size: 15px;
     padding: 5px 25px;
