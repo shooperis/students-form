@@ -4,8 +4,6 @@ const form = document.querySelector('#students-form');
 const studentsList = document.querySelector('#students-list');
 
 function studentsForm() {
-  let rangeElement = document.querySelector('#it-skills');
-
   holdFormData();
 
   form.addEventListener('submit', function(event) {
@@ -103,7 +101,7 @@ function studentsForm() {
     });
   });
 
-  rangeElement.addEventListener('input', function(event) {
+  form.querySelector('input[type="range"]').addEventListener('input', function(event) {
     showRangeValue(event.target.value, event.target);
   });
 }
