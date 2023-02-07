@@ -410,9 +410,23 @@ function renderFiltersForm(studentsFilterFormSelector) {
     document.querySelector('#students-filter-wrapper').classList.toggle('hidden');
   }
 
+  studentsFilterForm.querySelector('input[name="keywords"]').addEventListener('input', function(event) {
+    filteringData(studentsFilterForm);
+  });
+
   studentsFilterForm.addEventListener('submit', function(event) {
     event.preventDefault();
-    let thisForm = event.target;
+    filteringData(event.target);
+    scrollTo(studentsList.parentElement);
+  });
+
+  studentsFilterForm.addEventListener('reset', function() {
+    toggleFilter(document.querySelector('#show-filters-button'));
+    renderStudentsList(studentsData);
+    scrollTo(studentsList.parentElement);
+  });
+
+  function filteringData(thisForm) {
     let keywords = thisForm.keywords.value.toLowerCase();
     let field = thisForm.fields.value;
 
@@ -449,14 +463,7 @@ function renderFiltersForm(studentsFilterFormSelector) {
     });
 
     renderStudentsList(filteredStudentsResult);
-    scrollTo(studentsList.parentElement);
-  });
-
-  studentsFilterForm.addEventListener('reset', function() {
-    toggleFilter(document.querySelector('#show-filters-button'));
-    renderStudentsList(studentsData);
-    scrollTo(studentsList.parentElement);
-  });
+  }
 }
 
 function holdFormData() {
