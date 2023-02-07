@@ -32,6 +32,12 @@ function studentsForm() {
         if (input.value) {
           entryName = input.closest('.input-group').querySelector('label').textContent;
           entryValue = input.value;
+
+          if (input.type == 'number' || input.type == 'range') {
+            if (!isNaN(entryValue)) {
+              entryValue = +input.value;
+            }
+          }
         }
       }
 
@@ -420,10 +426,26 @@ function renderFiltersForm(studentsFilterFormSelector) {
         });
         studentFieldValue = studentFieldValueLowered;
       } else {
-        studentFieldValue = studentFieldValue.toLowerCase();
+        if (typeof studentFieldValue == 'string') {
+          studentFieldValue = studentFieldValue.toLowerCase();
+        }
       }
 
-      return studentFieldValue.includes(keywords);
+      if (typeof studentFieldValue == 'number') {
+        return studentFieldValue == keywords;
+      } else if (typeof studentFieldValue == 'array' || typeof studentFieldValue == 'object') {      
+        let elementIncludesResult = false;
+
+        studentFieldValue.forEach(element => {
+          if (element.includes(keywords)) {
+            elementIncludesResult = true;
+          }
+        });
+
+        return elementIncludesResult;
+      } else {
+        return studentFieldValue.includes(keywords);
+      }
     });
 
     renderStudentsList(filteredStudentsResult);
